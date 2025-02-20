@@ -18,6 +18,8 @@
 	</properties>
 	<modules>
 		<module>services/todoapp</module>
+		<module>services/discovery</module>
+		<module>services/apigateway</module>
 	</modules>
 	<dependencies>
 		<dependency>
