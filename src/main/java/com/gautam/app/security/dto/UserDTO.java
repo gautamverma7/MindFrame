@@ -1,6 +1,6 @@
-package com.gautam.app.dtos;
+package com.gautam.app.security.dto;
 
-import com.gautam.app.entities.Role;
+import com.gautam.app.security.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

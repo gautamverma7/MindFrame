@@ -1,7 +1,7 @@
-package com.gautam.app.repositories;
+package com.gautam.app.security.repositories;
 
-import com.gautam.app.entities.AppRole;
-import com.gautam.app.entities.Role;
+import com.gautam.app.security.entities.AppRole;
+import com.gautam.app.security.entities.Role;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 

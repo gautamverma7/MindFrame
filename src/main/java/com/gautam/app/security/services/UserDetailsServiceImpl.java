@@ -1,7 +1,7 @@
-package com.gautam.app.security;
+package com.gautam.app.security.services;
 
-import com.gautam.app.entities.User;
-import com.gautam.app.repositories.UserRepository;
+import com.gautam.app.security.entities.User;
+import com.gautam.app.security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

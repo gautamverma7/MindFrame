@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: todoapp
+  data:
+    mongodb:
+      uri: mongodb+srv://gautamkumar:dtu123@cluster0.mc9y9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: dev-server

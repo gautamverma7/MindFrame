@@ -1,9 +1,9 @@
-package com.gautam.app.security;
+package com.gautam.app.security.services;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.gautam.app.entities.User;
+import com.gautam.app.security.entities.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

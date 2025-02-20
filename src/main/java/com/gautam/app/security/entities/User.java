@@ -1,4 +1,4 @@
-package com.gautam.app.entities;
+package com.gautam.app.security.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;

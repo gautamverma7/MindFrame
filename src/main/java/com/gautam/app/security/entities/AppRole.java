@@ -1,4 +1,4 @@
-package com.gautam.app.entities;
+package com.gautam.app.security.entities;
 
 public enum AppRole {
     ROLE_USER,

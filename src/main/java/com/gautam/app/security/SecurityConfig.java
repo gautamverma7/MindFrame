@@ -1,13 +1,18 @@
 package com.gautam.app.security;
 
-import com.gautam.app.entities.AppRole;
-import com.gautam.app.entities.Role;
-import com.gautam.app.entities.User;
-import com.gautam.app.repositories.RoleRepository;
-import com.gautam.app.repositories.UserRepository;
+import com.gautam.app.security.entities.AppRole;
+import com.gautam.app.security.entities.Role;
+import com.gautam.app.security.entities.User;
+import com.gautam.app.security.repositories.RoleRepository;
+import com.gautam.app.security.repositories.UserRepository;
+import com.gautam.app.security.jwt.AuthEntryPointJwt;
+import com.gautam.app.security.jwt.AuthTokenFilter;
+import com.gautam.app.security.outh2.OAuth2LoginSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import java.time.LocalDate;
@@ -27,17 +33,18 @@ import static org.springframework.security.config.Customizer.withDefaults;
 //        securedEnabled = true,
 //        jsr250Enabled = true)
 public class SecurityConfig {
-//    @Autowired
-//    private AuthEntryPointJwt unauthorizedHandler;
 
-//    @Autowired
-//    @Lazy
-//    OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
 
-//    @Bean
-//    public AuthTokenFilter authenticationJwtTokenFilter() {
-//        return new AuthTokenFilter();
-//    }
+    @Autowired
+    @Lazy
+    OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -45,19 +52,21 @@ public class SecurityConfig {
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .ignoringRequestMatchers("/api/auth/public/**")
         );
-//        http.csrf(AbstractHttpConfigurer::disable);
-        http.
-                authorizeHttpRequests((requests)
+        //http.csrf(AbstractHttpConfigurer::disable);
+        http.authorizeHttpRequests((requests)
                         -> requests
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/csrf-token").permitAll()
                         .requestMatchers("/api/auth/public/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
-                        .anyRequest().authenticated());
-//        http.exceptionHandling(exception
-//                -> exception.authenticationEntryPoint(unauthorizedHandler));
-//        http.addFilterBefore(authenticationJwtTokenFilter(),
-//                UsernamePasswordAuthenticationFilter.class);
+                        .anyRequest().authenticated())
+                .oauth2Login(oauth2 -> {
+                    oauth2.successHandler(oAuth2LoginSuccessHandler);
+                });
+        http.exceptionHandling(exception
+                -> exception.authenticationEntryPoint(unauthorizedHandler));
+        http.addFilterBefore(authenticationJwtTokenFilter(),
+                UsernamePasswordAuthenticationFilter.class);
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();
